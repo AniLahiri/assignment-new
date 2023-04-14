@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import { useState } from 'react';
 
 type FormValues = {
   selectId: string;
@@ -6,18 +6,34 @@ type FormValues = {
 };
 
 export default function Web() {
+  const [fName, setFname] = useState('');
+  const [lName, setLname] = useState('');
+  const [showtext, setShowtext] = useState(false);
+
+  const handleSubmit = () => {
+    //call grapghql api
+    setShowtext(true);
+    setFname('');
+    setLname('');
+  };
+
   return (
     <>
       <div>
-        <h1>Typography</h1>
-        <div>
-          <h6>H6 THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.</h6>
-          <p>This a a paragraph</p>
-        </div>
-        <h2>Form Controls</h2>
-        <div>
-          <h3>Link</h3>
-        </div>
+        <form>
+          <input
+            type="text"
+            placeholder="First name"
+            onChange={(e) => setFname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Last name"
+            onChange={(e) => setLname(e.target.value)}
+          />
+          <button onClick={handleSubmit}>Go</button>
+        </form>
+        {showtext ? <h4>Full Name is {fName + ' ' + lName}</h4> : <em />}
       </div>
     </>
   );
