@@ -1,14 +1,22 @@
 import { useState } from 'react';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+  useQuery,
+} from '@apollo/client';
 
 export default function Welcome() {
   const [fName, setFname] = useState('');
   const [lName, setLname] = useState('');
+  const [fullName, setFullName] = useState('');
   const [showtext, setShowtext] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (fName !== '' && lName !== '') {
-      //call grapghql api
+      setFullName(getFullName());
       setShowtext(true);
     } else {
       setShowtext(false);
@@ -24,6 +32,25 @@ export default function Welcome() {
   const handleLNameChange = (event) => {
     setShowtext(false);
     setLname(event.target.value);
+  };
+
+  const GET_PERSON_FULL_NAME = gql`
+  query getPersonFullName($firstName: String!, $lastName: String!) {
+    person(firstName: $firstName, lastName: $lastName) {
+      name
+    }
+  }
+`;
+
+  const getFullName = () => {
+    const { loading, error, data } = useQuery(GET_PERSON_FULL_NAME, {
+      variables: { firstName: fName, lastName: lName },
+    });
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+
+    return data;
   };
 
   return (
@@ -43,7 +70,7 @@ export default function Welcome() {
         />
         <button type="submit">Go</button>
       </form>
-      {showtext ? <h4>Hello {fName + ' ' + lName}</h4> : <em />}
+      {showtext ? <h4>Hello {fullName}!</h4> : <em />}
     </div>
   );
 }

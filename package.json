@@ -8,11 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.12",
+    "class-validator": "^0.14.0",
+    "graphql": "^16.6.0",
     "next": "^13.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
-    "tsconfig": "*"
+    "reflect-metadata": "^0.1.13",
+    "tsconfig": "*",
+    "type-graphql": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "18.15.11",
