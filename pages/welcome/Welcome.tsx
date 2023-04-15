@@ -4,7 +4,6 @@ export default function Welcome() {
   const [fName, setFname] = useState('');
   const [lName, setLname] = useState('');
   const [showtext, setShowtext] = useState(false);
-  var str = '';
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +28,6 @@ export default function Welcome() {
 
   return (
     <div>
-      <h4 className="text-emerald-900">hch</h4>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
