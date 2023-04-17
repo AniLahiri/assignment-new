@@ -1,9 +1,15 @@
 import Welcome from './Welcome';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+  cache: new InMemoryCache(),
+});
 
 export default function Web() {
   return (
-    <div>
+    <ApolloProvider client={client}>
       <Welcome />
-    </div>
+    </ApolloProvider>
   );
 }

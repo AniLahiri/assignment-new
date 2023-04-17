@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "dependencies": {
+    "@apollo/server": "^4.6.0",
+    "@types/node": "^18.15.11",
+    "class-validator": "^0.14.0",
+    "graphql": "^16.6.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
+    "typescript": "^5.0.4"
+  },
+  "type": "module",
+  "scripts": {
+    "compile": "tsc",
+    "start": "npm run compile && node ./dist/index.js"
+  }
+}

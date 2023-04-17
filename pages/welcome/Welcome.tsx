@@ -1,57 +1,50 @@
 import { useState } from 'react';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-  useQuery,
-} from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 
 export default function Welcome() {
-  const [fName, setFname] = useState('');
-  const [lName, setLname] = useState('');
+  const [personData, setPersonData] = useState({ fName: '', lName: '' });
   const [fullName, setFullName] = useState('');
   const [showtext, setShowtext] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (fName !== '' && lName !== '') {
+  const handleSubmit = () => {
+    if (personData.fName !== '' && personData.lName !== '') {
       setFullName(getFullName());
       setShowtext(true);
     } else {
       setShowtext(false);
+      setFullName('');
       alert('No field can be empty');
     }
   };
 
   const handleFNameChange = (event) => {
     setShowtext(false);
-    setFname(event.target.value);
+    setPersonData({ ...personData, fName: event.target.value });
   };
 
   const handleLNameChange = (event) => {
     setShowtext(false);
-    setLname(event.target.value);
+    setPersonData({ ...personData, lName: event.target.value });
   };
 
-  const GET_PERSON_FULL_NAME = gql`
-  query getPersonFullName($firstName: String!, $lastName: String!) {
-    person(firstName: $firstName, lastName: $lastName) {
-      name
-    }
-  }
-`;
-
-  const getFullName = () => {
+  function getFullName() {
+    const GET_PERSON_FULL_NAME = gql`query getPersonFullName($fName : string, $lName: string) {
+      person(firstName: $fName, lastName: $lName){
+        name
+      }
+    }`;
     const { loading, error, data } = useQuery(GET_PERSON_FULL_NAME, {
-      variables: { firstName: fName, lastName: lName },
+      variables: {
+        fName: personData.fName,
+        lName: personData.lName,
+      },
     });
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
     return data;
-  };
+  }
 
   return (
     <div>
@@ -59,13 +52,11 @@ export default function Welcome() {
         <input
           type="text"
           placeholder="First name"
-          value={fName}
           onChange={handleFNameChange}
         />
         <input
           type="text"
           placeholder="Last name"
-          value={lName}
           onChange={handleLNameChange}
         />
         <button type="submit">Go</button>

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
@@ -7,5 +8,5 @@ export class Person {
   @Field()
   lastName!: string;
   @Field()
-  name!: string;
+  fullName!: string;
 }
