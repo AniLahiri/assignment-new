@@ -1,8 +1,8 @@
-import Welcome from './Welcome';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Welcome from "./Welcome";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: "http://localhost:4000",
   cache: new InMemoryCache(),
 });
 

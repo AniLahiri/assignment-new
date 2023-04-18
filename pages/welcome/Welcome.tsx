@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useState } from "react";
+import { gql, useQuery } from "@apollo/client";
 
 export default function Welcome() {
-  const [personData, setPersonData] = useState({ fName: '', lName: '' });
-  const [fullName, setFullName] = useState('');
+  const [personData, setPersonData] = useState({ fName: "", lName: "" });
+  const [fullName, setFullName] = useState("");
   const [showtext, setShowtext] = useState(false);
 
   const handleSubmit = () => {
-    if (personData.fName !== '' && personData.lName !== '') {
+    if (personData.fName !== "" && personData.lName !== "") {
       setFullName(getFullName());
       setShowtext(true);
     } else {
       setShowtext(false);
-      setFullName('');
-      alert('No field can be empty');
+      setFullName("");
+      alert("No field can be empty");
     }
   };
 
@@ -28,9 +28,11 @@ export default function Welcome() {
   };
 
   function getFullName() {
-    const GET_PERSON_FULL_NAME = gql`query fullName($firstName : String, $lastName: String){
-      fullName(fName: $firstName, lName: $lastName)
-  }`;
+    const GET_PERSON_FULL_NAME = gql`
+      query fullName($firstName: String, $lastName: String) {
+        fullName(fName: $firstName, lName: $lastName)
+      }
+    `;
     const { loading, error, data } = useQuery(GET_PERSON_FULL_NAME, {
       variables: {
         firstName: personData.fName,
