@@ -11,7 +11,9 @@ async function bootstrap() {
 
   const server = new ApolloServer({ schema: schema });
 
-  const { url } = await startStandaloneServer(server);
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+  });
 
   console.log(`Server is running, GraphQL Playground available at ${url}`);
 }
