@@ -1,67 +1,68 @@
-import { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useState } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
 
 export default function Welcome() {
-  const [personData, setPersonData] = useState({ fName: "", lName: "" });
-  const [fullName, setFullName] = useState("");
+  const [personData, setPersonData] = useState({ fName: '', lName: '' });
+  const [fullName, setFullName] = useState('');
   const [showtext, setShowtext] = useState(false);
 
-  const handleSubmit = () => {
-    if (personData.fName !== "" && personData.lName !== "") {
-      setFullName(getFullName());
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (personData.fName !== '' && personData.lName !== '') {
+      const name = await getFullName().then((response) => {
+        return response.data;
+      });
+      setFullName(name.fullName);
       setShowtext(true);
     } else {
       setShowtext(false);
-      setFullName("");
-      alert("No field can be empty");
+      setFullName('');
+      alert('No field can be empty');
     }
   };
 
   const handleFNameChange = (event) => {
+    event.preventDefault();
     setShowtext(false);
     setPersonData({ ...personData, fName: event.target.value });
   };
 
   const handleLNameChange = (event) => {
+    event.preventDefault();
     setShowtext(false);
     setPersonData({ ...personData, lName: event.target.value });
   };
 
-  function getFullName() {
-    const GET_PERSON_FULL_NAME = gql`
-      query fullName($firstName: String, $lastName: String) {
-        fullName(fName: $firstName, lName: $lastName)
-      }
-    `;
-    const { loading, error, data } = useQuery(GET_PERSON_FULL_NAME, {
-      variables: {
-        firstName: personData.fName,
-        lastName: personData.lName,
-      },
-    });
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error : {error.message}</p>;
-
-    return data;
+  const GET_PERSON_FULL_NAME = gql`query getfullName($firstName: String!, $lastName: String!) {
+    fullName(fName: $firstName, lName: $lastName)
   }
+  `;
+  const [getFullName, { loading, data }] = useLazyQuery(GET_PERSON_FULL_NAME, {
+    variables: {
+      firstName: personData.fName,
+      lastName: personData.lName,
+    },
+  });
+  if (loading) return <p>Loading ...</p>;
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form>
         <input
           type="text"
           placeholder="First name"
+          value={personData.fName}
           onChange={handleFNameChange}
         />
         <input
           type="text"
           placeholder="Last name"
+          value={personData.lName}
           onChange={handleLNameChange}
         />
-        <button type="submit">Go</button>
+        <button onClick={handleSubmit}>Go</button>
       </form>
-      {showtext ? <h4>Hello {fullName}!</h4> : <em />}
+      {showtext ? <h2>Hello {fullName}!</h2> : <em />}
     </div>
   );
 }
