@@ -28,15 +28,13 @@ export default function Welcome() {
   };
 
   function getFullName() {
-    const GET_PERSON_FULL_NAME = gql`query getPersonFullName($fName : string, $lName: string) {
-      person(firstName: $fName, lastName: $lName){
-        name
-      }
-    }`;
+    const GET_PERSON_FULL_NAME = gql`query fullName($firstName : String, $lastName: String){
+      fullName(fName: $firstName, lName: $lastName)
+  }`;
     const { loading, error, data } = useQuery(GET_PERSON_FULL_NAME, {
       variables: {
-        fName: personData.fName,
-        lName: personData.lName,
+        firstName: personData.fName,
+        lastName: personData.lName,
       },
     });
 
